@@ -1,0 +1,219 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm> // For std::shuffle
+#include <random>    // For random number generator
+#include <ctime>     // For seeding
+
+using namespace std;
+
+// Structure to hold each question
+struct Question {
+    string questionText;       // The question itself
+    string options[3];         // Multiple-choice options (3 per question)
+    char correctAnswer;        // The correct answer ('a', 'b', or 'c')
+};
+
+// Function to initialize the question bank
+void initializeQuestions(vector<Question>& questions) {
+    questions.push_back({"Which keyword is used for branching (conditional statements)?", {"if", "while", "for"}, 'a'});
+    questions.push_back({"What is the index of the first element in an array?", {"0", "1", "-1"}, 'a'});
+    questions.push_back({"Which header file is required to use vectors in C++?", {"<array>", "<vector>", "<iostream>"}, 'b'});
+    questions.push_back({"What is the correct syntax to define a function in C++?", {"returnType functionName() {}", "functionName() returnType {}", "define functionName {}"}, 'a'});
+    questions.push_back({"Which operator is used for equality comparison in C++?", {"=", "==", "==="}, 'b'});
+    questions.push_back({"How do you declare an array of 5 integers?", {"array<int,5>", "int arr;", "int arr[5];"}, 'c'});
+    questions.push_back({"What is the purpose of a `break` statement in a loop?", {"Exit the loop", "Skip to the next iteration", "Terminate the program"}, 'a'});
+    questions.push_back({"How do you access the size of a vector named `v`?", {"v.length()", "v.size()", "v.capacity()"}, 'b'});
+    questions.push_back({"What does the `return` keyword do in a function?", {"Ends the program", "Returns a value from the function", "Declares a return type"}, 'b'});
+    questions.push_back({"What keyword is used to define a class in C++?", {"structure", "class", "object"}, 'b'});
+    questions.push_back({"What is the term for an instance of a class?", {"Function", "Object", "Variable"}, 'b'});
+    questions.push_back({"How do you access a member function of an object?", {"object.member", "object.memberFunction()", "object->memberFunction()"}, 'c'});
+    questions.push_back({"What is the default access specifier for members of a class in C++?", {"private", "public", "protected"}, 'a'});
+    questions.push_back({"What keyword is used to create an object dynamically?", {"create", "malloc", "new"}, 'c'});
+    questions.push_back({"What keyword is used to define a function in C++?", {"function", "return", "void"}, 'c'});
+    questions.push_back({"How is a user-defined function called in C++?", {"call functionName()", "functionName()", "invoke(functionName)"}, 'b'});
+    questions.push_back({"What is required in a function declaration?", {"Function name only", "Function name and return type", "Function name, return type, and parameters"}, 'c'});
+    questions.push_back({"Which part of a user-defined function specifies what the function does?", {"Return type", "Function prototype", "Function body"}, 'c'});
+    questions.push_back({"What is the return type of a function that does not return a value?", {"null", "void", "int"}, 'b'});
+    questions.push_back({"What is the index of the first element in a C++ array?", {"0", "1", "-1"}, 'a'});
+    questions.push_back({"Which header file is required to use vectors in C++?", {"<iostream>", "<vector>", "<array>"}, 'b'});
+    questions.push_back({"What is the correct way to declare an array of 10 integers?", {"array<int>[10];", "array<10,int>;", "int arr[10];"}, 'c'});
+    questions.push_back({"Which function is used to add an element to the end of a vector?", {"append", "add", "push_back"}, 'c'});
+    questions.push_back({"What keyword is used to terminate a loop prematurely?", {"continue", "break", "exit"}, 'b'});
+    questions.push_back({"Which loop is best for iterating a fixed number of times?", {"while loop", "for loop", "do-while loop"}, 'b'});
+    questions.push_back({"What does the 'continue' statement do in a loop?", {"Exits the loop", "Skips to the next iteration", "Restarts the loop"}, 'b'});
+    questions.push_back({"What is the purpose of a 'nested loop'?", {"To restart the outer loop", "To loop over multiple dimensions", "To repeat a loop indefinitely"}, 'b'});
+    questions.push_back({"Which function is used to find the number of elements in a vector?", {"size()", "length()", "count()"}, 'a'});
+    questions.push_back({"How do you access the last element of a vector named `v`?", {"v[last]", "v[v.size() - 1]", "v.end()"}, 'b'});
+    questions.push_back({"What is the default value of an uninitialized array in C++?", {"Zero", "Garbage value", "Null"}, 'c'});
+    questions.push_back({"Which method is used to remove a specific element from a vector?", {"erase()", "remove()", "delete()"}, 'a'});
+    questions.push_back({"How can you iterate over all elements in a vector efficiently?", {"Using a for loop", "Using an iterator", "Using while loop"}, 'b'});
+    questions.push_back({"What is a user-defined function in C++?", 
+                        {"A function created by the programmer", "A function built into the C++ standard library", "A function that runs automatically"}, 'a'});
+
+    questions.push_back({"What keyword is used to define a function in C++?", 
+                        {"define", "return", "void"}, 'c'});
+
+    questions.push_back({"Which part of a function specifies its return type?", 
+                        {"Function body", "Function header", "Function call"}, 'b'});
+
+    questions.push_back({"Where is the function prototype typically placed?", 
+                        {"Before `main()`", "Inside `main()`", "After `main()`"}, 'a'});
+
+    questions.push_back({"How do you pass an argument by reference in C++?", 
+                        {"Using '&' before parameter name", "Using '*' before parameter name", "Using 'ref' keyword"}, 'a'});
+
+    questions.push_back({"What happens if a function is called but not defined?", 
+                        {"Compilation error", "Program runs but ignores the function call", "Runtime error"}, 'b'});
+
+    questions.push_back({"Which function does not return a value?", 
+                        {"int myFunction()", "void myFunction()", "float myFunction()"}, 'b'});
+
+    questions.push_back({"What is the purpose of a function prototype?", 
+                        {"It tells the compiler about the function before its definition", "It executes the function", "It calls the function"}, 'a'});
+
+    questions.push_back({"How do you call a function named `calculate()`?", 
+                        {"invoke calculate()", "calculate()", "call calculate()"}, 'b'});
+
+    questions.push_back({"Which part of a function contains the actual instructions?", 
+                        {"Function definition", "Function prototype", "Function call"}, 'a'});
+    questions.push_back({"What is a class in C++?", 
+                        {"A blueprint for creating objects", "A predefined function in C++", "A memory allocation mechanism"}, 'a'});
+
+    questions.push_back({"What keyword is used to define a class?", 
+                        {"object", "class", "struct"}, 'b'});
+
+    questions.push_back({"Which term refers to a specific instance of a class?", 
+                        {"Method", "Object", "Variable"}, 'b'});
+
+    questions.push_back({"What is the default access specifier for class members?", 
+                        {"protected", "private", "public"}, 'b'});
+
+    questions.push_back({"What does a constructor do?", 
+                        {"Allocates memory", "Initializes an object", "Destroys an object"}, 'b'});
+
+    questions.push_back({"Which function is called automatically when an object is created?", 
+                        {"Destructor", "Constructor", "Main function"}, 'b'});
+
+    questions.push_back({"Which keyword prevents modification of class members?", 
+                        {"const", "final", "static"}, 'a'});
+
+    questions.push_back({"How do you access a public member variable of an object?", 
+                        {"object->variable", "object.variable", "object(variable)"}, 'b'});
+
+    questions.push_back({"What is an accessor function used for?", 
+                        {"Retrieving the value of a private member", "Modifying a private member", "Deleting an object"}, 'a'});
+
+    questions.push_back({"Which function type in a class modifies member values?", 
+                        {"Accessor", "Mutator", "Constructor"}, 'b'});
+    questions.push_back({"What is a pointer in C++?", 
+                        {"A variable that stores memory addresses", "A function used to store numbers", "A data type for decimal values"}, 'a'});
+
+    questions.push_back({"Which operator is used to get the memory address of a variable?", 
+                        {"*", "&", "@"}, 'b'});
+
+    questions.push_back({"What does the `*` operator do when used with a pointer?", 
+                        {"Stores an integer value", "Dereferences the pointer", "Gets the memory address of a variable"}, 'b'});
+
+    questions.push_back({"Which keyword is used to dynamically allocate memory in C++?", 
+                        {"malloc", "new", "alloc"}, 'b'});
+
+    questions.push_back({"Which operator is used to free dynamically allocated memory?", 
+                        {"delete", "free", "clear"}, 'a'});
+
+    questions.push_back({"How do you declare a pointer to an integer?", 
+                        {"int *p;", "int p*;", "pointer<int> p;"}, 'a'});
+
+    questions.push_back({"What value does an uninitialized pointer contain?", 
+                        {"nullptr", "Garbage value", "0"}, 'b'});
+
+    questions.push_back({"Which function can be used to check if a pointer is `nullptr`?", 
+                        {"if (ptr == nullptr)", "if (ptr == empty)", "if (ptr == NULL)"}, 'a'});
+
+    questions.push_back({"How do you access the value stored at the memory location a pointer points to?", 
+                        {"Using the `&` operator", "Using the `*` operator", "Using the `->` operator"}, 'b'});
+
+    questions.push_back({"What does a null pointer represent?", 
+                        {"A pointer that doesn't point to a valid memory location", "A pointer that points to an integer value", "A pointer that stores zero"}, 'a'});
+
+}
+
+// Function to play the quiz game
+void playGame() {
+    // Display introduction
+    cout << "\nWelcome to the \"Introduction to C++ Programming\" Quiz Game!" << endl;
+    cout << "You need to answer 3 questions correctly to win. You will lose if you get 5 wrong.\n" << endl;
+
+    // Initialize the question bank
+    vector<Question> questions;
+    initializeQuestions(questions);
+
+    // Shuffle the questions using std::shuffle
+    random_device rd; // Random device for seeding
+    mt19937 g(rd());  // Mersenne Twister random number generator
+    shuffle(questions.begin(), questions.end(), g);
+
+    // Track scores
+    int correctAnswers = 0;
+    int wrongAnswers = 0;
+    int questionsAsked = 0;
+
+    // Gameplay loop
+    for (const auto& q : questions) {
+        if (correctAnswers >= 3) {
+            cout << "Congratulations! You've answered 3 questions correctly and won the game!" << endl;
+            break;
+        }
+        if (wrongAnswers >= 5) {
+            cout << "You've answered 5 questions incorrectly. You lose!" << endl;
+            break;
+        }
+        if (questionsAsked >= 10) {  // Limit the number of questions per game
+            break;
+        }
+
+        // Ask the question
+        cout << q.questionText << endl;
+        cout << "a) " << q.options[0] << endl;
+        cout << "b) " << q.options[1] << endl;
+        cout << "c) " << q.options[2] << endl;
+
+        char answer;
+        cout << "Enter your choice (a, b, or c): ";
+        cin >> answer;
+
+        // Check the answer
+        if (tolower(answer) == tolower(q.correctAnswer)) {
+            cout << "Correct!\n" << endl;
+            correctAnswers++;
+        } else {
+            cout << "Wrong. The correct answer was '" << q.correctAnswer << "' (" << q.options[q.correctAnswer - 'a'] << ").\n" << endl;
+            wrongAnswers++;
+        }
+        questionsAsked++;
+    }
+
+    // End of game summary
+    cout << "Game over. You answered " << correctAnswers << " correctly and " << wrongAnswers << " incorrectly." << endl;
+    cout << "Thanks for playing!" << endl;
+}
+
+// Main function with replay option
+int main() {
+    char playAgain;
+
+    do {
+        playGame(); // Run the game
+        
+        cout << "\nWould you like to play again? (y/n): ";
+        cin >> playAgain;
+        
+    } while (tolower(playAgain) == 'y');
+
+    cout << "Thanks for playing! See you next time!" << endl;
+    return 0;
+}
+
+
+
+
